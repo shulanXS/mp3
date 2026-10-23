@@ -31,6 +31,15 @@ app.use(express.json());
 // Use routes as a module (see index.js)
 require('./routes')(app, router);
 
+// Any other path has no resource behind it: answer with JSON instead of
+// Express' default HTML "Cannot GET /" so clients always get {message, data}
+app.use(function (req, res) {
+    res.status(404).json({
+        message: 'Not found',
+        data: 'Available endpoints: /api/users, /api/tasks'
+    });
+});
+
 // Start the server
 app.listen(port);
 console.log('Server running on port ' + port);
